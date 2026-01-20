@@ -3,13 +3,14 @@ import os
 from email.mime.text import MIMEText
 from email.mime.multipart import MIMEMultipart
 
-def send_email_to_manager(user_contact: str, user_question: str):
+def send_email_to_manager(user_contact: str, user_question: str, user_name: str = "Unknown"):
     """
     Sends an email to the manager with the user's contact details and question.
     
     Args:
         user_contact (str): The user's contact information (email or phone).
         user_question (str): The user's question or issue.
+        user_name (str): The name of the user.
         
     Returns:
         str: A message indicating success or failure.
@@ -21,10 +22,11 @@ def send_email_to_manager(user_contact: str, user_question: str):
     if not sender_email or not password or not receiver_email:
         return "Error: Email credentials or manager email not set in environment variables."
 
-    subject = "New Inquiry from Tetkool Bot"
+    subject = f"New Inquiry from Tetkool Bot - {user_name}"
     body = f"""
     New inquiry received from Tetkool Bot.
     
+    User Name: {user_name}
     User Contact: {user_contact}
     
     Question/Issue:
@@ -52,7 +54,7 @@ tool_definition = {
     "type": "function",
     "function": {
         "name": "send_email_to_manager",
-        "description": "Send an email to the manager when the bot cannot answer a question. Requires user contact info.",
+        "description": "Send an email to the manager when the bot cannot answer a question. Requires user contact info and name.",
         "parameters": {
             "type": "object",
             "properties": {
@@ -63,9 +65,13 @@ tool_definition = {
                 "user_question": {
                     "type": "string",
                     "description": "The question or issue the user is asking about."
+                },
+                "user_name": {
+                    "type": "string",
+                    "description": "The name of the user."
                 }
             },
-            "required": ["user_contact", "user_question"]
+            "required": ["user_contact", "user_question", "user_name"]
         }
     }
 }

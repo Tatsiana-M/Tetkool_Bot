@@ -58,7 +58,7 @@ tool_definition = {
     "type": "function",
     "function": {
         "name": "get_courses",
-        "description": "Get a list of courses from the knowledge base, optionally filtered by category or search query.",
+        "description": "Get a list of courses regarding their prices, duration, start dates, and detailed descriptions. Use this tool to answer questions about course costs, schedule, and content.",
         "parameters": {
             "type": "object",
             "properties": {
