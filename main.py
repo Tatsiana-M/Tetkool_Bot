@@ -15,7 +15,8 @@ from openai import OpenAI
 
 # Import tools
 sys.path.append(os.path.dirname(os.path.abspath(__file__)))
-from tools.get_courses import get_courses, tool_definition
+from tools.get_courses import get_courses, tool_definition as get_courses_definition
+from tools.send_email import send_email_to_manager, tool_definition as send_email_definition
 
 # Load environment variables
 load_dotenv()
@@ -47,10 +48,11 @@ bot = Bot(token=TELEGRAM_TOKEN, default=DefaultBotProperties(parse_mode=ParseMod
 
 # Available tools map
 AVAILABLE_TOOLS = {
-    "get_courses": get_courses
+    "get_courses": get_courses,
+    "send_email_to_manager": send_email_to_manager
 }
 
-TOOLS_DEFINITIONS = [tool_definition]
+TOOLS_DEFINITIONS = [get_courses_definition, send_email_definition]
 
 # Load system prompt
 try:
@@ -132,7 +134,9 @@ async def command_start_handler(message: Message) -> None:
     # Reset conversation on start
     user_conversations[user_id] = [{"role": "system", "content": SYSTEM_PROMPT}]
     
-    await message.answer(f"Привет, {message.from_user.full_name}! 👋\nЯ помогу тебе подобрать лучший курс. Напиши, что тебя интересует!")
+    await message.answer(
+        f"Привет 👋\nЯ помогаю предпринимателям зарабатывать больше и экономить время с помощью ИИ.\nУ тебя бизнес, экспертные услуги или ты только планируешь запуск?"
+    )
 
 @dp.message()
 async def message_handler(message: Message) -> None:
