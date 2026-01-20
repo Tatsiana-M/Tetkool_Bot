@@ -1,6 +1,6 @@
 # Secrets
 .env
-
+.env.backup
 # Virtual Environment
 venv/
 env/
